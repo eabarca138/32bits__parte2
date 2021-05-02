@@ -54,7 +54,8 @@ export default new Vuex.Store({
         color: "red",
         destacado: true
       },
-    ]
+    ],
+    juegosVendidos: []
   },
   getters: {
     juegosConStock: (state) => {
@@ -66,8 +67,58 @@ export default new Vuex.Store({
         return juego.codigo == codigo;
       });
     },
+
+    sumaTotal(state) {
+      return state.juegosVendidos.reduce((acc, x) => acc + x.precio, 0)
+    }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    procesarVenta(state, juego) {
+      state.juegos.forEach((x) => {
+        if (x.codigo == juego.codigo && x.stock > 0) {
+          x.stock--
+        }
+      })
+    },
+    registrarVenta(state, payload) {
+          state.juegosVendidos.push(payload)
+        },
+    mensajeVenta() {
+      alert('Venta procesada')
+    }
+  },
+  actions: {
+    async vender({ commit, state }, juego) {
+        try {
+          await new Promise((resolve)=>setTimeout(() => {
+            state.juegos.forEach((x) =>{
+              if (x.codigo == juego.codigo && x.stock > 0) {
+              commit("procesarVenta", juego);
+             }
+           })
+            resolve();
+        }, 2000)); 
+
+        await new Promise((resolve)=>setTimeout(() => {
+          state.juegos.forEach((x) =>{
+            if (x.codigo == juego.codigo && x.stock > 0) {
+              const juegoVendido = {
+                codigo: x.codigo,
+                nombre: x.nombre,
+                precio: x.precio
+              };
+               commit('registrarVenta', juegoVendido)
+              }
+            })
+            resolve();
+          }, 1000)); 
+          
+          commit('mensajeVenta')
+          
+        } catch (error) {
+          console.log(error);
+        }
+    }
+  },
   modules: {},
 });

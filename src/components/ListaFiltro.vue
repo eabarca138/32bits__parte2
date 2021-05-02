@@ -12,8 +12,8 @@
 export default {
   name: "ListaFiltro",
   props: {
-    juegosFiltrados: Array,
-    juegosPorCodigo: Array,
+    juegosFiltrados: {Array},
+    juegosPorCodigo: {Array}
   },
 };
 </script>

@@ -1,11 +1,11 @@
 <template>
-  <div class="about">
-    <p>Cantidad de juegos: {{ cantidadJuegos }}</p>
+  <section class="about">
+    <p>Cantidad de juegos registrados: {{ cantidadJuegos }}</p>
 
     <label>Busqueda de juegos por código:<input v-model="codigo" type="text"></label>
     
     <ListaFiltro  :juegosFiltrados= "juegosFiltrados" :juegosPorCodigo= "juegosPorCodigo" />
-  </div>
+  </section>
 </template>
 
 <script>
@@ -29,7 +29,7 @@ import ListaFiltro from "@/components/ListaFiltro"
       cantidadJuegos() {
         return this.juegos.length
       },
-      juegosPorCodigo(){
+      juegosPorCodigo() {
         return !this.codigo ? this.juegosConStock : this.juegosFiltrados(this.codigo)
       }
     },
